@@ -1,4 +1,4 @@
-# XVE-UI-Lib
+# XVE UI Library
 ![Screenshot 2023-09-11 200814](https://github.com/3345-c-a-t-s-u-s/XVE-UI-Lib/assets/117000269/e0af566c-9977-48d0-9d82-db40971d3238)
 
 ## [Source](https://raw.githubusercontent.com/3345-c-a-t-s-u-s/XVE-UI-Lib/main/source)
