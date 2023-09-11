@@ -52,7 +52,7 @@ function XVE:Window(WindowName)
 	ScreenGui.ResetOnSpawn = false
 	ScreenGui.IgnoreGuiInset = true
 	ScreenGui.ResetOnSpawn = false
-	
+
 	Frame.Parent = ScreenGui
 	Frame.Active = true
 	Frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
@@ -146,11 +146,11 @@ function XVE:Window(WindowName)
 	HeaderTitle.TextSize = 14.000
 	HeaderTitle.TextWrapped = true
 	HeaderTitle.TextXAlignment = Enum.TextXAlignment.Left
-	
+
 	function XVEWindow:Tab(TabName)
 		local tabButton = Instance.new("TextButton")
 		local XVETab = {}
-		
+
 		tabButton.Name = "tabButton"
 		tabButton.Parent = Tab_collect:FindFirstChildWhichIsA('ScrollingFrame')
 		tabButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -164,14 +164,14 @@ function XVE:Window(WindowName)
 		tabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 		tabButton.TextSize = 15.000
 		tabButton.TextWrapped = true
-		
+
 		local TabMain = Instance.new("ScrollingFrame")
 		local UIListLayout = Instance.new("UIListLayout")
-		
+
 		UIListLayout:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
 			TabMain.CanvasSize = UDim2.new(0,0,0,UIListLayout.AbsoluteContentSize.Y)
 		end)
-		
+
 		TabMain.Name = "TabMain"
 		TabMain.Parent = Tab_Frame_collect
 		TabMain.Active = true
@@ -188,9 +188,9 @@ function XVE:Window(WindowName)
 		UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 		UIListLayout.Padding = UDim.new(0, 4)
-		
+
 		local event = Instance.new('BindableEvent')
-		
+
 		event.Event:Connect(function(val)
 			if val then
 				TWEEN_SERVICE:Create(tabButton,TweenInfo.new(0.25),{TextColor3 = Color3.fromRGB(255, 0, 4)}):Play()
@@ -200,21 +200,21 @@ function XVE:Window(WindowName)
 				TabMain.Visible = false
 			end
 		end)
-		
+
 		if #Tabs==0 then
 			event:Fire(true)
 		else
 			event:Fire(false)
 		end
-		
+
 		table.insert(Tabs,event)
-		
+
 		local mainTextType = {
 			['right'] = Enum.TextXAlignment.Right,
 			['left'] = Enum.TextXAlignment.Left,
 			['center'] = Enum.TextXAlignment.Center
 		}
-		
+
 		tabButton.MouseButton1Click:Connect(function()
 			for i,v in ipairs(Tabs) do
 				if v==event then
@@ -224,7 +224,7 @@ function XVE:Window(WindowName)
 				end
 			end
 		end)
-		
+
 		function XVETab:Layout()
 			local Layout = Instance.new("Frame")
 			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -244,12 +244,12 @@ function XVE:Window(WindowName)
 			UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 1.00), NumberSequenceKeypoint.new(0.10, 0.45), NumberSequenceKeypoint.new(0.90, 0.47), NumberSequenceKeypoint.new(1.00, 1.00)}
 			UIGradient.Parent = Layout
 		end
-		
+
 		function XVETab:NewButton(ButtonName,callback,position)
 			local textpos = mainTextType[tostring(position):lower()] or mainTextType.center
 			callback = callback or function() end
 			local Functions = {}
-			
+
 			local Button = Instance.new("Frame")
 			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 			local UIStroke = Instance.new("UIStroke")
@@ -289,22 +289,22 @@ function XVE:Window(WindowName)
 			InputButton.TextWrapped = true
 			InputButton.Text = ButtonName or "Button"
 			InputButton.TextXAlignment = textpos
-			
+
 			ConnectButtonEffect(InputButton,UIStroke)
-			
+
 			InputButton.MouseButton1Click:Connect(callback)
-			
+
 			function Functions:Text(new)
 				InputButton.Text = new
 			end
-			
+
 			function Functions:Fire(...)
 				callback(...)
 			end
-			
+
 			return Functions
 		end
-		
+
 		function XVETab:NewLabel(LabelName,position)
 			local Functions = {}
 			local textpos = mainTextType[tostring(position):lower()] or mainTextType.left
@@ -345,14 +345,14 @@ function XVE:Window(WindowName)
 			Title.TextSize = 14.000
 			Title.TextWrapped = true
 			Title.TextXAlignment = textpos or Enum.TextXAlignment.Left
-			
+
 			function Functions:Text(a)
 				Title.Text = tostring(a)
 			end
-			
+
 			return Functions
 		end
-		
+
 		function XVETab:NewToggle(ToggleName,Default,callback)
 			callback = callback or function() end
 			local Functions = {}
@@ -451,41 +451,41 @@ function XVE:Window(WindowName)
 			Title.TextSize = 15.000
 			Title.TextWrapped = true
 			Title.TextXAlignment = Enum.TextXAlignment.Left
-			
+
 			ConnectButtonEffect(Toggle,UIStroke)
-			
+
 			local function dex (val)
 				if val then
 					ToggleEnable.Visible = true
 					TWEEN_SERVICE:Create(ToggleEnable,TweenInfo.new(0.1),{Size = UDim2.new(0.850000024, 0, 0.850000024, 0),BackgroundTransparency=0}):Play()
-					
+
 				else
 					TWEEN_SERVICE:Create(ToggleEnable,TweenInfo.new(0.1),{Size = UDim2.new(0,0,0,0),BackgroundTransparency=1}):Play()
 
 				end
 			end
-			
+
 			dex(Default)
-			
+
 			InputButton.MouseButton1Click:Connect(function()
 				Default = not Default
 				dex(Default)
 				callback(Default)
 			end)
-			
+
 			function Functions:Text(a)
 				Title.Text = tostring(a)
 			end
-			
+
 			function Functions:Set(de)
 				Default = de
 				dex(Default)
 				callback(de)
 			end
-			
+
 			return Functions
 		end
-		
+
 		function XVETab:NewSlider(SliderName,confix,callback)
 			confix = confix or {}
 			confix.Min = confix.Min or 1
@@ -493,7 +493,7 @@ function XVE:Window(WindowName)
 			confix.Default = confix.Default or confix.Min
 			callback = callback or function() end
 			local Functions = {}
-			
+
 			local Slider = Instance.new("Frame")
 			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 			local UIGradient = Instance.new("UIGradient")
@@ -593,16 +593,16 @@ function XVE:Window(WindowName)
 			ValueFrame.TextWrapped = true
 			ValueFrame.TextXAlignment = Enum.TextXAlignment.Right
 			ValueFrame.Text = tostring(confix.Default)..tostring("/")..tostring(confix.Max)
-			
+
 			local function UpdateText()
 				local size = TEXT_SERVICE:GetTextSize(ValueFrame.Text,ValueFrame.TextSize,ValueFrame.Font,Vector2.new(math.huge,math.huge))
 				--ValueFrame.Size = UDim2.new((size.X) / 200,0,0.45,0)
 				TWEEN_SERVICE:Create(ValueFrame,TweenInfo.new(0.2),{Size = UDim2.new((size.X) / 200,0,0.45,0)}):Play()
 			end
-			
+
 			ConnectButtonEffect(Slider,UIStroke)
 			UpdateText()
-			
+
 			local danger = false
 
 			SliderFrame.InputBegan:Connect(function(Input)
@@ -646,40 +646,40 @@ function XVE:Window(WindowName)
 					end
 
 				end
-				
+
 				UpdateText()
 			end
 
 			USERINPUT_SERVICE.InputChanged:Connect(function(a)
 				Set("Input",a)
 			end)
-			
+
 			Set()
-			
+
 			function Functions:Value(a)
 				Set(nil,nil,a)
 			end
-			
+
 			function Functions:Text(a)
 				Title.Text = tostring(a)
 			end
-			
+
 			return Functions
 		end
-		
+
 		function XVETab:NewKeybind(KeybindName,Default,callback)
 			Default = Default or nil
 			callback = callback or function() end
-			
+
 			local function Gettext(e:Enum.KeyCode)
 				if not e then
 					return "None"
 				end
 				return tostring(e.Name)
 			end
-			
+
 			local Functions = {}
-			
+
 			local Keybind = Instance.new("Frame")
 			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 			local UIGradient = Instance.new("UIGradient")
@@ -776,16 +776,16 @@ function XVE:Window(WindowName)
 			InputButton.TextSize = 14.000
 			InputButton.TextTransparency = 1.000
 			InputButton.TextWrapped = true
-			
+
 			local function UpdateText()
 				local textsize = TEXT_SERVICE:GetTextSize(BindKey.Text,BindKey.TextSize,BindKey.Font,Vector2.new(math.huge,math.huge))
 				--
 				TWEEN_SERVICE:Create(BindKey,TweenInfo.new(0.2),{Size = UDim2.new((textsize.X/200),0,0.75,0)}):Play()
 			end
-			
+
 			ConnectButtonEffect(Keybind,UIStroke)
 			UpdateText()
-			
+
 			local Binding = false
 			InputButton.MouseButton1Click:Connect(function()
 				if Binding then
@@ -815,26 +815,26 @@ function XVE:Window(WindowName)
 				end
 				return
 			end)
-			
+
 			function Functions:Value(a)
 				BindKey.Text = Gettext(a)
 				Default = a
 				UpdateText() 
 				callback(a)
 			end
-			
+
 			function Functions:Text(v)
 				Title.Text = tostring(v)
 			end
-			
+
 			return Functions
 		end
-		
+
 		function XVETab:NewTextBox(TextBoxName,InputText,callback)
 			InputText = InputText or ""
 			callback = callback or function() end
 			local Functions = {}
-			
+
 			local TextBox = Instance.new("Frame")
 			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 			local UIGradient = Instance.new("UIGradient")
@@ -894,7 +894,7 @@ function XVE:Window(WindowName)
 			TextBox_2.TextWrapped = true
 			TextBox_2.TextXAlignment = Enum.TextXAlignment.Left
 			TextBox_2.PlaceholderText = InputText
-			
+
 			Frame.Parent = TextBox_2
 			Frame.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
 			Frame.BackgroundTransparency = 0.400
@@ -912,35 +912,35 @@ function XVE:Window(WindowName)
 			UIStroke.Color = Color3.fromRGB(29, 29, 29)
 			UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 			UIStroke.Parent = Frame
-			
+
 			ConnectButtonEffect(TextBox_2,UIStroke)
-			
+
 			TextBox_2.FocusLost:Connect(function()
 				callback(TextBox_2.Text)
 			end)
-			
+
 			function Functions:Value(s)
 				TextBox_2.Text = tostring(s)
 				callback(TextBox_2.Text)
 			end
-			
+
 			function Functions:Get()
 				return TextBox_2.Text
 			end
-			
+
 			function Functions:Text(a)
 				Title.Text = tostring(a)
 			end
-			
+
 			return Functions
 		end
-		
+
 		function XVETab:NewDropdown(DropdownName,InfoData,Default,callback)
 			InfoData = InfoData or {}
 			callback = callback or function() end
 			Default = Default or {InfoData[1]}
 			local Functions = {}
-			
+
 			local Dropdown = Instance.new("Frame")
 			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 			local UIGradient = Instance.new("UIGradient")
@@ -1043,7 +1043,7 @@ function XVE:Window(WindowName)
 			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 			UIListLayout.Padding = UDim.new(0, 2)
 			local choose = InfoData[1]
-			
+
 			local function VALUE_CHANGE(val)
 				if val then
 					Dropdown_Scroll.Visible = true
@@ -1055,7 +1055,7 @@ function XVE:Window(WindowName)
 					TWEEN_SERVICE:Create(UIAspectRatioConstraint,TweenInfo.new(0.2),{AspectRatio = 13}):Play()
 				end
 			end
-			
+
 			local function GetButton()
 				local Button = Instance.new("TextButton")
 				local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -1077,21 +1077,21 @@ function XVE:Window(WindowName)
 				UIAspectRatioConstraint.Parent = Button
 				UIAspectRatioConstraint.AspectRatio = 13.000
 				UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
-				
+
 				return Button
 			end
-			
+
 			local function OnRF()
 				for i,v in ipairs(Dropdown_Scroll:GetChildren()) do
 					if v:isA('TextButton') then
 						v:Destroy()
 					end
 				end
-				
+
 				for i,v in ipairs(InfoData) do
 					local button = GetButton()
 					button.Text = tostring(v)
-					
+
 					button.MouseButton1Click:Connect(function()
 						for i,a in ipairs(Dropdown_Scroll:GetChildren()) do
 							if a:isA('TextButton') then
@@ -1102,12 +1102,12 @@ function XVE:Window(WindowName)
 								end
 							end
 						end
-						
+
 						choose = v
-						
+
 						callback(v)
 					end)
-					
+
 					if i==1 and Default == InfoData[1] then
 						for i,a in ipairs(Dropdown_Scroll:GetChildren()) do
 							if a:isA('TextButton') then
@@ -1118,27 +1118,27 @@ function XVE:Window(WindowName)
 								end
 							end
 						end
-						
+
 						choose = v
 
 						callback(v)
 					end
 				end
 			end
-			
+
 			local db_toggle = false
 			local on = false
-			
+
 			VALUE_CHANGE(false)
-			
+
 			ConnectButtonEffect(Dropdown,UIStroke)
-			
+
 			TopBar.InputBegan:Connect(function(a)
 				if a.UserInputType == Enum.UserInputType.MouseButton1 or a.UserInputType == Enum.UserInputType.Touch then
 					on = true
 				end
 			end)
-			
+
 			TopBar.InputEnded:Connect(function(a)
 				if a.UserInputType == Enum.UserInputType.MouseButton1 or a.UserInputType == Enum.UserInputType.Touch then
 					if on then
@@ -1148,33 +1148,33 @@ function XVE:Window(WindowName)
 					end
 				end
 			end)
-			
+
 			OnRF()
-			
+
 			function Functions:Refresh(newinfo)
 				newinfo = newinfo or InfoData
 				InfoData = newinfo
 				OnRF()
 			end
-			
+
 			function Functions:Get()
 				return choose
 			end
-			
+
 			function Functions:Text(a)
 				Title.Text = tostring(a)
 			end
-			
+
 			return Functions
 		end
-		
+
 		return XVETab
 	end
-	
+
 	function XVEWindow:Destroy()
 		ScreenGui:Destroy()
 	end
-	
+
 	function XVEWindow:AddToggleButton()
 		local maind = Frame
 		local Frame = Instance.new("Frame")
@@ -1225,7 +1225,7 @@ function XVE:Window(WindowName)
 		InputButton.TextWrapped = true
 		InputButton.AnchorPoint = Vector2.new(0.5,0.5)
 		InputButton.Position = UDim2.new(0.5,0,0.5,0)
-		
+
 		local dragToggle = nil
 		local dragStart = nil
 		local startPos = nil
@@ -1257,12 +1257,12 @@ function XVE:Window(WindowName)
 				end
 			end
 		end)
-		
+
 		InputButton.MouseButton1Click:Connect(function()
 			maind.Visible = not maind.Visible
 		end)
 	end
-	
+
 	function XVEWindow:SetKeybindToggle(key)
 		USERINPUT_SERVICE.InputBegan:Connect(function(a)
 			if a.KeyCode == key then
@@ -1270,7 +1270,7 @@ function XVE:Window(WindowName)
 			end
 		end)
 	end
-	
+
 	local dragToggle = nil
 	local dragStart = nil
 	local startPos = nil
@@ -1302,7 +1302,7 @@ function XVE:Window(WindowName)
 			end
 		end
 	end)
-	
+
 	return XVEWindow
 end
 
@@ -1329,10 +1329,10 @@ function XVE:Notification()
 	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
 	UIListLayout.Padding = UDim.new(0, 2)
-	
+
 	function NotificationFunction:Notify(TitleName,tim)
 		tim = tim or 5
-		
+
 		local Notify = Instance.new("Frame")
 		local Main = Instance.new("Frame")
 		local Countdown = Instance.new("Frame")
@@ -1396,7 +1396,7 @@ function XVE:Notification()
 		Title.TextSize = 14.000
 		Title.TextWrapped = true
 		Title.TextXAlignment = Enum.TextXAlignment.Right
-		
+
 		local function SetTounknow(time_)
 			if time_ then
 				TWEEN_SERVICE:Create(Notify,TweenInfo.new(time_),{Size = UDim2.new(0,0,0.096,0)}):Play()
@@ -1407,35 +1407,37 @@ function XVE:Notification()
 				Main.Position = UDim2.new(3,0,0,0)
 			end
 		end
-		
+
 		local function offall()
 			TWEEN_SERVICE:Create(DropShadow,TweenInfo.new(0.2),{ImageTransparency = 1}):Play()
 			TWEEN_SERVICE:Create(Title,TweenInfo.new(0.2),{TextTransparency = 1}):Play()
 			TWEEN_SERVICE:Create(Countdown,TweenInfo.new(0.2),{BackgroundTransparency = 1}):Play()
 		end
-		
+
 		local function upsize()
 			local textSize = TEXT_SERVICE:GetTextSize(Title.Text,Title.TextSize,Title.Font,Vector2.new(math.huge,math.huge))
 			TWEEN_SERVICE:Create(Notify,TweenInfo.new(0.2),{Size = UDim2.new((textSize.X / 200),0,0.096,0)}):Play()
 		end
-		
-		SetTounknow()
-		Countdown.Size = UDim2.new(0,0,0.1,0)
-		task.wait()
-		TWEEN_SERVICE:Create(Main,TweenInfo.new(0.3),{Position = UDim2.new(0,0,0,0)}):Play()
-		upsize()
-		
-		local tw = TWEEN_SERVICE:Create(Countdown,TweenInfo.new(tim,Enum.EasingStyle.Linear),{Size =  UDim2.new(1,0,0.1,0)})
-		upsize()
-		tw:Play()
-		tw.Completed:Wait()
-		task.wait(0.2)
-		SetTounknow(0.5)
-		offall()
-		task.wait(0.64)
-		Notify:Destroy()
+
+		coroutine.wrap(function()
+			SetTounknow()
+			Countdown.Size = UDim2.new(0,0,0.1,0)
+			task.wait()
+			TWEEN_SERVICE:Create(Main,TweenInfo.new(0.3),{Position = UDim2.new(0,0,0,0)}):Play()
+			upsize()
+
+			local tw = TWEEN_SERVICE:Create(Countdown,TweenInfo.new(tim,Enum.EasingStyle.Linear),{Size =  UDim2.new(1,0,0.1,0)})
+			upsize()
+			tw:Play()
+			tw.Completed:Wait()
+			task.wait(0.2)
+			SetTounknow(0.5)
+			offall()
+			task.wait(0.64)
+			Notify:Destroy()
+		end)()
 	end
-	
+
 	return NotificationFunction
 end
 
