@@ -284,7 +284,7 @@ function XVE:Window(WindowName)
 		tabButton.TextWrapped = true
 
 		UIAspectRatioConstraint.Parent = tabButton
-		UIAspectRatioConstraint.AspectRatio = 5.000
+		UIAspectRatioConstraint.AspectRatio = 7.000
 		UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
 
 		local TabMain = Instance.new("ScrollingFrame")
