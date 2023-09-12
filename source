@@ -267,6 +267,8 @@ function XVE:Window(WindowName)
 		local tabButton = Instance.new("TextButton")
 		local XVETab = {}
 
+		local tabButton = Instance.new("TextButton")
+		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 		tabButton.Name = "tabButton"
 		tabButton.Parent = Tab_collect:FindFirstChildWhichIsA('ScrollingFrame')
 		tabButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -274,12 +276,16 @@ function XVE:Window(WindowName)
 		tabButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		tabButton.BorderSizePixel = 0
 		tabButton.ClipsDescendants = true
-		tabButton.Size = UDim2.new(1, 0, 0.0353000015, 0)
+		tabButton.Size = UDim2.new(1, 0, 0.5, 0)
 		tabButton.Font = Enum.Font.RobotoMono
 		tabButton.Text = TabName or "Example Tab"
-		tabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+		tabButton.TextColor3 = Color3.fromRGB(255, 0, 3)
 		tabButton.TextSize = 15.000
 		tabButton.TextWrapped = true
+
+		UIAspectRatioConstraint.Parent = tabButton
+		UIAspectRatioConstraint.AspectRatio = 5.000
+		UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
 
 		local TabMain = Instance.new("ScrollingFrame")
 		local UIListLayout = Instance.new("UIListLayout")
