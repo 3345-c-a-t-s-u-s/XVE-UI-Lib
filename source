@@ -1180,10 +1180,10 @@ function XVE:Window(WindowName)
 					if v:isA('TextButton') then
 						if val then
 							v:SetAttribute("MainTran",0)
-							TWEEN_SERVICE:Create(v,TweenInfo.new(0.2),{TextTransparency = 0}):Play()
+							TWEEN_SERVICE:Create(v,TweenInfo.new(0.5),{TextTransparency = 0}):Play()
 						else
 							v:SetAttribute("MainTran",1)
-							TWEEN_SERVICE:Create(v,TweenInfo.new(0.2),{TextTransparency = 1}):Play()
+							TWEEN_SERVICE:Create(v,TweenInfo.new(0.5),{TextTransparency = 1}):Play()
 						end
 					end
 				end
