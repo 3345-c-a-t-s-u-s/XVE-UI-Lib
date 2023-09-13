@@ -1172,14 +1172,31 @@ function XVE:Window(WindowName)
 			UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 			UIListLayout.Padding = UDim.new(0, 2)
+			
 			local choose = InfoData[1]
-
+			
+			local function redtran(val)
+				for i,v : TextButton in ipairs(Dropdown_Scroll:GetChildren()) do
+					if v:isA('TextButton') then
+						if val then
+							v:SetAttribute("MainTran",0)
+							TWEEN_SERVICE:Create(v,TweenInfo.new(0.2),{TextTransparency = 0}):Play()
+						else
+							v:SetAttribute("MainTran",1)
+							TWEEN_SERVICE:Create(v,TweenInfo.new(0.2),{TextTransparency = 1}):Play()
+						end
+					end
+				end
+			end
+			
 			local function VALUE_CHANGE(val)
 				if val then
+					redtran(true)
 					Dropdown_Scroll.Visible = true
 					TWEEN_SERVICE:Create(Title_2,TweenInfo.new(0.2),{Rotation = 90}):Play()
 					TWEEN_SERVICE:Create(UIAspectRatioConstraint,TweenInfo.new(0.2),{AspectRatio = 2.25}):Play()
 				else
+					redtran(false)
 					Dropdown_Scroll.Visible = false
 					TWEEN_SERVICE:Create(Title_2,TweenInfo.new(0.2),{Rotation = -90}):Play()
 					TWEEN_SERVICE:Create(UIAspectRatioConstraint,TweenInfo.new(0.2),{AspectRatio = 13}):Play()
@@ -1209,20 +1226,6 @@ function XVE:Window(WindowName)
 				UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
 
 				return Button
-			end
-			
-			local function redtran(val)
-				for i,v : TextButton in ipairs(Dropdown_Scroll:GetChildren()) do
-					if v:isA('TextButton') then
-						if val then
-							v:SetAttribute("MainTran",0)
-							TWEEN_SERVICE:Create(v,TweenInfo.new(0.2),{TextTransparency = 0}):Play()
-						else
-							v:SetAttribute("MainTran",1)
-							TWEEN_SERVICE:Create(v,TweenInfo.new(0.2),{TextTransparency = 1}):Play()
-						end
-					end
-				end
 			end
 			
 			local function OnRF()
