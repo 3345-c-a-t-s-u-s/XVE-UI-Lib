@@ -1388,7 +1388,7 @@ function XVE:Window(WindowName)
 			local function Update()
 				local size = TEXT_SERVICE:GetTextSize(WatermarkText.Text,WatermarkText.TextSize,WatermarkText.Font,Vector2.new(math.huge,math.huge))
 
-				TWEEN_SERVICE:Create(WatermarkText,TweenInfo.new(0.05),{Size = UDim2.new((size.X / 200),0,.98,0)}):Play()
+				TWEEN_SERVICE:Create(WatermarkText,TweenInfo.new(0.05),{Size = UDim2.new((size.X / 600),0,.98,0)}):Play()
 			end
 
 			WatermarkText.Text = tostring(Text)
