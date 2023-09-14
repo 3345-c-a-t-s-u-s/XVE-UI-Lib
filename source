@@ -1321,7 +1321,7 @@ function XVE:Window(WindowName)
 	function XVEWindow:Destroy()
 		ScreenGui:Destroy()
 	end
-	
+
 	function XVEWindow:Watermark()
 		local Watermark = Instance.new("Frame")
 		local UIListLayout = Instance.new("UIListLayout")
@@ -1341,16 +1341,16 @@ function XVE:Window(WindowName)
 		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 		UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 		UIListLayout.Padding = UDim.new(0, 2)
-		
+
 		local Functions = {}
-		
+
 		function Functions:NewWatermark(Text)
 			if not Text then
 				return
 			end
-			
+
 			local WatermarFucntions = {}
-			
+
 			local WatermarkText = Instance.new("TextLabel")
 			local Frame = Instance.new("Frame")
 			local UIGradient = Instance.new("UIGradient")
@@ -1367,7 +1367,8 @@ function XVE:Window(WindowName)
 			WatermarkText.TextScaled = true
 			WatermarkText.TextSize = 15.000
 			WatermarkText.TextWrapped = true
-
+			WatermarkText.TextXAlignment = Enum.TextXAlignment.Left
+			
 			Frame.Parent = WatermarkText
 			Frame.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
 			Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -1378,33 +1379,33 @@ function XVE:Window(WindowName)
 			UIGradient.Rotation = 90
 			UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(1.00, 1.00)}
 			UIGradient.Parent = Frame
-			
+
 			local LockText = Instance.new('UITextSizeConstraint')
 			LockText.MaxTextSize = 15
 			LockText.MinTextSize = 15
 			LockText.Parent = WatermarkText
-			
+
 			local function Update()
 				local size = TEXT_SERVICE:GetTextSize(WatermarkText.Text,WatermarkText.TextSize,WatermarkText.Font,Vector2.new(math.huge,math.huge))
-				
-				TWEEN_SERVICE:Create(WatermarkText,TweenInfo.new(0.05),{Size = UDim2.new((size.X / 550),0,(size.Y / 22.5),0)}):Play()
+
+				TWEEN_SERVICE:Create(WatermarkText,TweenInfo.new(0.05),{Size = UDim2.new((size.X / 200),0,.98,0)}):Play()
 			end
-			
+
 			WatermarkText.Text = tostring(Text)
-			
+
 			Update()
-			
+
 			function WatermarFucntions:Text(a)
 				WatermarkText.Text = tostring(a)
 				Update()
 			end
-			
+
 			return WatermarFucntions
 		end
-		
+
 		return Functions
 	end
-	
+
 	function XVEWindow:AddToggleButton()
 		local maind = Frame
 		local Frame = Instance.new("Frame")
