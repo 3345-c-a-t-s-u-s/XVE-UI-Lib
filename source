@@ -1380,15 +1380,10 @@ function XVE:Window(WindowName)
 			UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(1.00, 1.00)}
 			UIGradient.Parent = Frame
 
-			local LockText = Instance.new('UITextSizeConstraint')
-			LockText.MaxTextSize = 15
-			LockText.MinTextSize = 15
-			LockText.Parent = WatermarkText
-
 			local function Update()
 				local size = TEXT_SERVICE:GetTextSize(WatermarkText.Text,WatermarkText.TextSize,WatermarkText.Font,Vector2.new(math.huge,math.huge))
 
-				TWEEN_SERVICE:Create(WatermarkText,TweenInfo.new(0.05),{Size = UDim2.new((size.X / 600),0,.98,0)}):Play()
+				TWEEN_SERVICE:Create(WatermarkText,TweenInfo.new(0.1),{Size = UDim2.new((size.X / 1000),0,.98,0)}):Play()
 			end
 
 			WatermarkText.Text = tostring(Text)
