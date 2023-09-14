@@ -1365,7 +1365,7 @@ function XVE:Window(WindowName)
 			WatermarkText.Font = Enum.Font.RobotoMono
 			WatermarkText.TextColor3 = Color3.fromRGB(255, 255, 255)
 			WatermarkText.TextScaled = true
-			WatermarkText.TextSize = 15.000
+			WatermarkText.TextSize = 14.000
 			WatermarkText.TextWrapped = true
 			WatermarkText.TextXAlignment = Enum.TextXAlignment.Left
 			
