@@ -1172,9 +1172,9 @@ function XVE:Window(WindowName)
 			UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 			UIListLayout.Padding = UDim.new(0, 2)
-			
+
 			local choose = InfoData[1]
-			
+
 			local function redtran(val)
 				for i,v : TextButton in ipairs(Dropdown_Scroll:GetChildren()) do
 					if v:isA('TextButton') then
@@ -1188,7 +1188,7 @@ function XVE:Window(WindowName)
 					end
 				end
 			end
-			
+
 			local function VALUE_CHANGE(val)
 				if val then
 					redtran(true)
@@ -1227,7 +1227,7 @@ function XVE:Window(WindowName)
 
 				return Button
 			end
-			
+
 			local function OnRF()
 				for i,v in ipairs(Dropdown_Scroll:GetChildren()) do
 					if v:isA('TextButton') then
@@ -1321,7 +1321,90 @@ function XVE:Window(WindowName)
 	function XVEWindow:Destroy()
 		ScreenGui:Destroy()
 	end
+	
+	function XVEWindow:Watermark()
+		local Watermark = Instance.new("Frame")
+		local UIListLayout = Instance.new("UIListLayout")
 
+		Watermark.Name = "Watermark"
+		Watermark.Parent = ScreenGui
+		Watermark.AnchorPoint = Vector2.new(0.5, 0)
+		Watermark.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+		Watermark.BackgroundTransparency = 1.000
+		Watermark.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Watermark.BorderSizePixel = 0
+		Watermark.Position = UDim2.new(0.499000013, 0, 0.944999993, 0)
+		Watermark.Size = UDim2.new(0.980000019, 0, 0.0500000007, 0)
+
+		UIListLayout.Parent = Watermark
+		UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+		UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+		UIListLayout.Padding = UDim.new(0, 2)
+		
+		local Functions = {}
+		
+		function Functions:NewWatermark(Text)
+			if not Text then
+				return
+			end
+			
+			local WatermarFucntions = {}
+			
+			local WatermarkText = Instance.new("TextLabel")
+			local Frame = Instance.new("Frame")
+			local UIGradient = Instance.new("UIGradient")
+
+			WatermarkText.Name = "Watermark"
+			WatermarkText.Parent = Watermark
+			WatermarkText.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+			WatermarkText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			WatermarkText.BorderSizePixel = 0
+			WatermarkText.Position = UDim2.new(0, 0, -2.073205e-06, 0)
+			WatermarkText.Size = UDim2.new(0.0899034441, 0, 1.00000012, 0)
+			WatermarkText.Font = Enum.Font.RobotoMono
+			WatermarkText.TextColor3 = Color3.fromRGB(255, 255, 255)
+			WatermarkText.TextScaled = true
+			WatermarkText.TextSize = 15.000
+			WatermarkText.TextWrapped = true
+
+			Frame.Parent = WatermarkText
+			Frame.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+			Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Frame.BorderSizePixel = 0
+			Frame.Size = UDim2.new(1, 0, 0.100000001, 0)
+			Frame.ZIndex = 2
+
+			UIGradient.Rotation = 90
+			UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(1.00, 1.00)}
+			UIGradient.Parent = Frame
+			
+			local LockText = Instance.new('UITextSizeConstraint')
+			LockText.MaxTextSize = 15
+			LockText.MinTextSize = 15
+			LockText.Parent = WatermarkText
+			
+			local function Update()
+				local size = TEXT_SERVICE:GetTextSize(WatermarkText.Text,WatermarkText.TextSize,WatermarkText.Font,Vector2.new(math.huge,math.huge))
+				
+				TWEEN_SERVICE:Create(WatermarkText,TweenInfo.new(0.05),{Size = UDim2.new((size.X / 550),0,(size.Y / 22.5),0)}):Play()
+			end
+			
+			WatermarkText.Text = tostring(Text)
+			
+			Update()
+			
+			function WatermarFucntions:Text(a)
+				WatermarkText.Text = tostring(a)
+				Update()
+			end
+			
+			return WatermarFucntions
+		end
+		
+		return Functions
+	end
+	
 	function XVEWindow:AddToggleButton()
 		local maind = Frame
 		local Frame = Instance.new("Frame")
