@@ -10,6 +10,15 @@ local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/3345-
 
 local Window = library:Window("XVE UI")
 local Notification = library:Notification()
+local Watermark = Window:Watermark()
+
+local WaterPING = Watermark:NewWatermark("PING: ")
+
+coroutine.wrap(function()
+	while true do task.wait(0.1)
+		WaterPING:Text(tostring("PING: ")..tostring(math.ceil(game:GetService('Workspace'):GetServerTimeNow())))
+	end
+end)()
 
 Window:AddToggleButton()
 Window:SetKeybindToggle(Enum.KeyCode.X)
