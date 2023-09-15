@@ -28,6 +28,11 @@ local function ConnectButtonEffect(UIFrame:Frame&TextButton&ImageLabel,UIStroke:
 	end)
 end
 
+local function OffsetToScale(Offset)
+	local ViewPortSize = workspace.Camera.ViewportSize
+	return {Offset[1] / ViewPortSize.X, Offset[2] / ViewPortSize.Y}
+end
+
 function XVE:Window(WindowName)
 	WindowName = WindowName or "XVE"
 	local XVEWindow = {}
@@ -904,7 +909,7 @@ function XVE:Window(WindowName)
 			local function UpdateText()
 				local textsize = TEXT_SERVICE:GetTextSize(BindKey.Text,BindKey.TextSize,BindKey.Font,Vector2.new(math.huge,math.huge))
 				--
-				TWEEN_SERVICE:Create(BindKey,TweenInfo.new(0.2),{Size = UDim2.new((textsize.X/200),0,0.75,0)}):Play()
+				TWEEN_SERVICE:Create(BindKey,TweenInfo.new(0.2),{Size = UDim2.new(0,textsize.X + 9,0.75,0)}):Play()
 			end
 
 			ConnectButtonEffect(Keybind,UIStroke)
@@ -1368,7 +1373,7 @@ function XVE:Window(WindowName)
 			WatermarkText.TextSize = 14.000
 			WatermarkText.TextWrapped = true
 			WatermarkText.TextXAlignment = Enum.TextXAlignment.Center
-			
+
 			Frame.Parent = WatermarkText
 			Frame.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
 			Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -1379,13 +1384,30 @@ function XVE:Window(WindowName)
 			UIGradient.Rotation = 90
 			UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(1.00, 1.00)}
 			UIGradient.Parent = Frame
-
+			
+			local lockedtext = Instance.new('UITextSizeConstraint')
+			lockedtext.MaxTextSize = 15
+			lockedtext.MinTextSize = 15
+			
+			lockedtext.Parent = WatermarkText
+			
+			local function sttr()
+				WatermarkText.Size = UDim2.new(0,0,0,0)
+				WatermarkText.TextTransparency = 1
+				Frame.BackgroundTransparency = 1
+				
+				TWEEN_SERVICE:Create(WatermarkText,TweenInfo.new(1),{TextTransparency = 0}):Play()
+				TWEEN_SERVICE:Create(Frame,TweenInfo.new(0.6),{BackgroundTransparency = 0}):Play()
+			end
+			
 			local function Update()
 				local size = TEXT_SERVICE:GetTextSize(WatermarkText.Text,WatermarkText.TextSize,WatermarkText.Font,Vector2.new(math.huge,math.huge))
 
-				TWEEN_SERVICE:Create(WatermarkText,TweenInfo.new(0.1),{Size = UDim2.new((size.X / 1000),0,.98,0)}):Play()
+				TWEEN_SERVICE:Create(WatermarkText,TweenInfo.new(0.1),{Size = UDim2.new(0,size.X + 9,.98,0)}):Play()
 			end
-
+			
+			sttr()
+			
 			WatermarkText.Text = tostring(Text)
 
 			Update()
@@ -1394,14 +1416,19 @@ function XVE:Window(WindowName)
 				WatermarkText.Text = tostring(a)
 				Update()
 			end
-
+			
+			function WatermarFucntions:Delete()
+				WatermarkText:Destroy()
+			end
+			
 			return WatermarFucntions
 		end
 
 		return Functions
 	end
 
-	function XVEWindow:AddToggleButton()
+	function XVEWindow:AddToggleButton(text)
+		text = text or "Open/Close"
 		local maind = Frame
 		local Frame = Instance.new("Frame")
 		local UICorner = Instance.new("UICorner")
@@ -1417,7 +1444,8 @@ function XVE:Window(WindowName)
 		Frame.Position = UDim2.new(0.6966362, 0, 0.0407608785, 0)
 		Frame.Size = UDim2.new(0.140000001, 0, 0.140000001, 0)
 		Frame.SizeConstraint = Enum.SizeConstraint.RelativeYY
-
+		Frame.AnchorPoint = Vector2.new(0.5,0.2)
+		
 		UICorner.CornerRadius = UDim.new(0, 3)
 		UICorner.Parent = Frame
 
@@ -1444,14 +1472,28 @@ function XVE:Window(WindowName)
 		InputButton.ClipsDescendants = true
 		InputButton.Size = UDim2.new(0.75, 0, 0.75, 0)
 		InputButton.Font = Enum.Font.RobotoMono
-		InputButton.Text = "Toggle"
+		InputButton.Text = text or "Open/Close"
 		InputButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 		InputButton.TextScaled = true
 		InputButton.TextSize = 14.000
 		InputButton.TextWrapped = true
 		InputButton.AnchorPoint = Vector2.new(0.5,0.5)
 		InputButton.Position = UDim2.new(0.5,0,0.5,0)
+		
+		local function srr()
+			Frame.Size = UDim2.new(0,0,0)
+			Frame_2.BackgroundTransparency = 1
+			UIStroke.Transparency = 1
+			InputButton.TextTransparency = 1
+			
+			TWEEN_SERVICE:Create(Frame,TweenInfo.new(0.5,Enum.EasingStyle.Quint),{Size = UDim2.new(0.140000001, 0, 0.140000001, 0)}):Play()
+			task.wait(0.5)
+			TWEEN_SERVICE:Create(Frame_2,TweenInfo.new(1,Enum.EasingStyle.Quad),{BackgroundTransparency = 0}):Play()
+			TWEEN_SERVICE:Create(UIStroke,TweenInfo.new(1,Enum.EasingStyle.Quad),{Transparency = 0.2}):Play()
+			TWEEN_SERVICE:Create(InputButton,TweenInfo.new(1,Enum.EasingStyle.Quad),{TextTransparency = 0}):Play()
 
+		end
+		
 		local dragToggle = nil
 		local dragStart = nil
 		local startPos = nil
@@ -1486,8 +1528,14 @@ function XVE:Window(WindowName)
 
 		InputButton.MouseButton1Click:Connect(function()
 			UI_VALUE = not UI_VALUE
+			UIStroke.Transparency = 1
+			UIStroke.Color = Color3.fromRGB(255, 0, 4)
+			
+			TWEEN_SERVICE:Create(UIStroke,TweenInfo.new(0.4,Enum.EasingStyle.Quad),{Transparency = 0.2,Color = Color3.fromRGB(0, 0, 0)}):Play()
 			ToggleUI(UI_VALUE)
 		end)
+		
+		srr()
 	end
 
 	function XVEWindow:SetKeybindToggle(key)
@@ -1531,11 +1579,30 @@ function XVE:Window(WindowName)
 		end
 	end)
 
-	ToggleUI(false,0)
-
 	coroutine.wrap(function()
-		task.wait(0.2)
-		ToggleUI(true,0.1)
+		Frame.Size = UDim2.new(0,0,0,0)
+		ToggleUI(false,0)
+		
+		task.wait(0.1)
+		
+		Frame:FindFirstChild('Frame').BackgroundTransparency = 1
+		Tab_Frame_collect.Visible = false
+		Tab_collect.Visible = false
+		task.wait(0.3)
+		Frame.Size = UDim2.new(0,0,0,5)
+		Frame.Visible = true
+		TWEEN_SERVICE:Create(Frame,TweenInfo.new(0.5),{BackgroundTransparency = 0}):Play()
+		
+		TWEEN_SERVICE:Create(Frame,TweenInfo.new(0.45,Enum.EasingStyle.Quad),{Size = UDim2.new(0.224999994, 200, 0, 5)}):Play()
+		
+		task.wait(0.55)
+		
+		TWEEN_SERVICE:Create(Frame,TweenInfo.new(0.45,Enum.EasingStyle.Quad),{Size = UDim2.new(0.224999994, 200, 0.224999994, 150)}):Play()
+
+		task.wait(0.9)
+		Tab_Frame_collect.Visible = true
+		Tab_collect.Visible = true
+		ToggleUI(true,0.5)
 	end)()
 
 	return XVEWindow
@@ -1651,7 +1718,9 @@ function XVE:Notification()
 
 		local function upsize()
 			local textSize = TEXT_SERVICE:GetTextSize(Title.Text,Title.TextSize,Title.Font,Vector2.new(math.huge,math.huge))
-			TWEEN_SERVICE:Create(Notify,TweenInfo.new(0.2),{Size = UDim2.new((textSize.X / 200),0,0.096,0)}):Play()
+			local dex = OffsetToScale({textSize.X,textSize.Y})
+			TWEEN_SERVICE:Create(Notify,TweenInfo.new(0.2),{Size = UDim2.new(0,textSize.X,0.096,0)}):Play()
+			print(dex[1])
 		end
 
 		coroutine.wrap(function()
