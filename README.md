@@ -8,15 +8,15 @@
 ```lua
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/3345-c-a-t-s-u-s/XVE-UI-Lib/main/source"))()
 
-local Window = library:Window("XVE UI")
+local Window = library:Window("XVE UI - "..tostring(game.Name))
 local Notification = library:Notification()
 local Watermark = Window:Watermark()
 
-local WaterPING = Watermark:NewWatermark("PING: ")
+local WaterPING = Watermark:NewWatermark("TIME: ")
 
 coroutine.wrap(function()
-	while true do task.wait(0.1)
-		WaterPING:Text(tostring("PING: ")..tostring(math.ceil(game:GetService('Workspace'):GetServerTimeNow())))
+	while true do task.wait()
+		WaterPING:Text(tostring("TIME: ")..tostring(game:GetService('Workspace'):GetServerTimeNow()))
 	end
 end)()
 
