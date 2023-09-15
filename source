@@ -54,7 +54,10 @@ function XVE:Window(WindowName)
 	local UIStroke_2 = Instance.new("UIStroke")
 	local UICorner_2 = Instance.new("UICorner")
 	local HeaderTitle = Instance.new("TextLabel")
-
+	
+	XVEWindow.Version = 5
+	XVEWindow.StartTime = workspace:GetServerTimeNow()
+	
 	UIListLayout:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
 		ScrollingFrame.CanvasSize = UDim2.new(0,0,0,UIListLayout.AbsoluteContentSize.Y)
 	end)
@@ -1384,30 +1387,30 @@ function XVE:Window(WindowName)
 			UIGradient.Rotation = 90
 			UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(1.00, 1.00)}
 			UIGradient.Parent = Frame
-			
+
 			local lockedtext = Instance.new('UITextSizeConstraint')
 			lockedtext.MaxTextSize = 15
 			lockedtext.MinTextSize = 15
-			
+
 			lockedtext.Parent = WatermarkText
-			
+
 			local function sttr()
 				WatermarkText.Size = UDim2.new(0,0,0,0)
 				WatermarkText.TextTransparency = 1
 				Frame.BackgroundTransparency = 1
-				
+
 				TWEEN_SERVICE:Create(WatermarkText,TweenInfo.new(1),{TextTransparency = 0}):Play()
 				TWEEN_SERVICE:Create(Frame,TweenInfo.new(0.6),{BackgroundTransparency = 0}):Play()
 			end
-			
+
 			local function Update()
 				local size = TEXT_SERVICE:GetTextSize(WatermarkText.Text,WatermarkText.TextSize,WatermarkText.Font,Vector2.new(math.huge,math.huge))
 
 				TWEEN_SERVICE:Create(WatermarkText,TweenInfo.new(0.1),{Size = UDim2.new(0,size.X + 9,.98,0)}):Play()
 			end
-			
+
 			sttr()
-			
+
 			WatermarkText.Text = tostring(Text)
 
 			Update()
@@ -1416,11 +1419,11 @@ function XVE:Window(WindowName)
 				WatermarkText.Text = tostring(a)
 				Update()
 			end
-			
+
 			function WatermarFucntions:Delete()
 				WatermarkText:Destroy()
 			end
-			
+
 			return WatermarFucntions
 		end
 
@@ -1445,7 +1448,7 @@ function XVE:Window(WindowName)
 		Frame.Size = UDim2.new(0.140000001, 0, 0.140000001, 0)
 		Frame.SizeConstraint = Enum.SizeConstraint.RelativeYY
 		Frame.AnchorPoint = Vector2.new(0.5,0.2)
-		
+
 		UICorner.CornerRadius = UDim.new(0, 3)
 		UICorner.Parent = Frame
 
@@ -1479,13 +1482,13 @@ function XVE:Window(WindowName)
 		InputButton.TextWrapped = true
 		InputButton.AnchorPoint = Vector2.new(0.5,0.5)
 		InputButton.Position = UDim2.new(0.5,0,0.5,0)
-		
+
 		local function srr()
 			Frame.Size = UDim2.new(0,0,0)
 			Frame_2.BackgroundTransparency = 1
 			UIStroke.Transparency = 1
 			InputButton.TextTransparency = 1
-			
+
 			TWEEN_SERVICE:Create(Frame,TweenInfo.new(0.5,Enum.EasingStyle.Quint),{Size = UDim2.new(0.140000001, 0, 0.140000001, 0)}):Play()
 			task.wait(0.5)
 			TWEEN_SERVICE:Create(Frame_2,TweenInfo.new(1,Enum.EasingStyle.Quad),{BackgroundTransparency = 0}):Play()
@@ -1493,7 +1496,7 @@ function XVE:Window(WindowName)
 			TWEEN_SERVICE:Create(InputButton,TweenInfo.new(1,Enum.EasingStyle.Quad),{TextTransparency = 0}):Play()
 
 		end
-		
+
 		local dragToggle = nil
 		local dragStart = nil
 		local startPos = nil
@@ -1530,11 +1533,11 @@ function XVE:Window(WindowName)
 			UI_VALUE = not UI_VALUE
 			UIStroke.Transparency = 1
 			UIStroke.Color = Color3.fromRGB(255, 0, 4)
-			
+
 			TWEEN_SERVICE:Create(UIStroke,TweenInfo.new(0.4,Enum.EasingStyle.Quad),{Transparency = 0.2,Color = Color3.fromRGB(0, 0, 0)}):Play()
 			ToggleUI(UI_VALUE)
 		end)
-		
+
 		srr()
 	end
 
@@ -1582,9 +1585,9 @@ function XVE:Window(WindowName)
 	coroutine.wrap(function()
 		Frame.Size = UDim2.new(0,0,0,0)
 		ToggleUI(false,0)
-		
+
 		task.wait(0.1)
-		
+
 		Frame:FindFirstChild('Frame').BackgroundTransparency = 1
 		Tab_Frame_collect.Visible = false
 		Tab_collect.Visible = false
@@ -1592,11 +1595,11 @@ function XVE:Window(WindowName)
 		Frame.Size = UDim2.new(0,0,0,5)
 		Frame.Visible = true
 		TWEEN_SERVICE:Create(Frame,TweenInfo.new(0.5),{BackgroundTransparency = 0}):Play()
-		
+
 		TWEEN_SERVICE:Create(Frame,TweenInfo.new(0.45,Enum.EasingStyle.Quad),{Size = UDim2.new(0.224999994, 200, 0, 5)}):Play()
-		
+
 		task.wait(0.55)
-		
+
 		TWEEN_SERVICE:Create(Frame,TweenInfo.new(0.45,Enum.EasingStyle.Quad),{Size = UDim2.new(0.224999994, 200, 0.224999994, 150)}):Play()
 
 		task.wait(0.9)
@@ -1649,7 +1652,7 @@ function XVE:Notification()
 		Notify.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		Notify.BorderSizePixel = 0
 		Notify.Position = UDim2.new(0, 0, 0.904212236, 0)
-		Notify.Size = UDim2.new(1, 0, 0.055, 0)
+		Notify.Size = UDim2.new(1, 0, 0.075, 0)
 
 		Main.Name = "Main"
 		Main.Parent = Notify
@@ -1694,11 +1697,19 @@ function XVE:Notification()
 		Title.Font = Enum.Font.RobotoMono
 		Title.Text = tostring(TitleName) or "Noify"
 		Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-		Title.TextScaled = true
+		--Title.TextScaled = true
 		Title.TextSize = 15.000
 		Title.TextWrapped = true
- 		--Title.TextXAlignment = Enum.TextXAlignment.Right
-
+		Title.RichText = true
+		Title.TextTransparency = 1
+		--Title.TextXAlignment = Enum.TextXAlignment.Right
+		
+		local locked = Instance.new('UITextSizeConstraint')
+		
+		locked.MaxTextSize = 11
+		locked.MinTextSize = 10
+		locked.Parent = Title
+		
 		local function SetTounknow(time_)
 			if time_ then
 				TWEEN_SERVICE:Create(Notify,TweenInfo.new(time_),{Size = UDim2.new(0,0,0.096,0)}):Play()
@@ -1712,14 +1723,16 @@ function XVE:Notification()
 
 		local function offall()
 			TWEEN_SERVICE:Create(DropShadow,TweenInfo.new(0.2),{ImageTransparency = 1}):Play()
-			TWEEN_SERVICE:Create(Title,TweenInfo.new(0.2),{TextTransparency = 1}):Play()
+			TWEEN_SERVICE:Create(Title,TweenInfo.new(0.2,Enum.EasingStyle.Quint),{TextTransparency = 1}):Play()
 			TWEEN_SERVICE:Create(Countdown,TweenInfo.new(0.2),{BackgroundTransparency = 1}):Play()
+			TWEEN_SERVICE:Create(Notify,TweenInfo.new(0.2),{Size = UDim2.new(0,0,0,0)}):Play()
 		end
 
 		local function upsize()
 			local textSize = TEXT_SERVICE:GetTextSize(Title.Text,Title.TextSize,Title.Font,Vector2.new(math.huge,math.huge))
 			local dex = OffsetToScale({textSize.X,textSize.Y})
-			TWEEN_SERVICE:Create(Notify,TweenInfo.new(0.2),{Size = UDim2.new(0,textSize.X + 4,0.055,0)}):Play()
+			TWEEN_SERVICE:Create(Notify,TweenInfo.new(0.2),{Size = UDim2.new(0,textSize.X + 4,0.075,0)}):Play()
+			TWEEN_SERVICE:Create(Title,TweenInfo.new(0.3,Enum.EasingStyle.Quint),{TextTransparency = 0}):Play()
 		end
 
 		coroutine.wrap(function()
