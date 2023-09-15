@@ -1697,6 +1697,7 @@ function XVE:Notification()
 		Title.TextScaled = true
 		Title.TextSize = 14.000
 		Title.TextWrapped = true
+ 		Title.TextXAlignment = Enum.TextXAlignment.Right
 
 		local function SetTounknow(time_)
 			if time_ then
@@ -1718,7 +1719,7 @@ function XVE:Notification()
 		local function upsize()
 			local textSize = TEXT_SERVICE:GetTextSize(Title.Text,Title.TextSize,Title.Font,Vector2.new(math.huge,math.huge))
 			local dex = OffsetToScale({textSize.X,textSize.Y})
-			TWEEN_SERVICE:Create(Notify,TweenInfo.new(0.2),{Size = UDim2.new(0,textSize.X + 10,0.055,0)}):Play()
+			TWEEN_SERVICE:Create(Notify,TweenInfo.new(0.2),{Size = UDim2.new(0,textSize.X + 4.5,0.055,0)}):Play()
 		end
 
 		coroutine.wrap(function()
